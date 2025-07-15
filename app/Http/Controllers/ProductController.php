@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -13,8 +15,9 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $categories = Category::all();
         $products = Product::with('category')->get();
-        return view('admin.product.index', ['products' => $products]);
+        return view('admin.product.index', compact('categories', 'products'));
     }
 
     /**
@@ -22,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -30,7 +33,28 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string:max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+            'description' => 'nullable|string',
+            'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $path = null;
+        if ($request->hasFile('icon')) {
+            $path = $request->file('icon')->store('products', 'public');
+        }
+
+        Product::create([
+            'name' => $validatedData['name'],
+            'slug' => $validatedData['slug'],
+            'category_id' => $validatedData['category_id'],
+            'description' => $validatedData['description'],
+            'icon' => $path,
+        ]);
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
     /**
@@ -54,7 +78,25 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validatedData = request()->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string:max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+            'description' => 'nullable|string',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('icon')) {
+            if ($product->icon && Storage::exists($product->icon)) {
+                Storage::delete($product->icon);
+            }
+            $path = $request->file('icon')->store('products', 'public');
+            $validatedData['icon'] = $path;
+        }
+
+        $product->update($validatedData);
+
+        return redirect()->route('product.index', $product->id)->with('success', 'Produk berhasil diupdate!');
     }
 
     /**
