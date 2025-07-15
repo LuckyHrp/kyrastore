@@ -15,18 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        //     'username' => 'testuser',
-        //     'password' => bcrypt('123'),
-        // ]);
-
-
         $this->call(RolePermissionSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(NominalSeeder::class);
     }
 }

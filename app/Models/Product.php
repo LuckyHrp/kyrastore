@@ -20,4 +20,9 @@ class Product extends Model
     {
         return $this->BelongsTo(Category::class);
     }
+
+    public function nominal()
+    {
+        return $this->hasMany(Nominal::class);
+    }
 }

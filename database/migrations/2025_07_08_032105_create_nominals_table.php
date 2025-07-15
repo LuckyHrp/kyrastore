@@ -13,7 +13,8 @@ return new class extends Migration {
         Schema::create('nominals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained();
-            $table->string('nominal');
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->unsignedBigInteger('price');
             $table->timestamps();
         });

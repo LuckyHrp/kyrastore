@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nominal;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class NominalController extends Controller
@@ -12,8 +13,9 @@ class NominalController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.nominal.index');
+        $products = Product::all();
+        $nominals = Nominal::with('product')->get();
+        return view('admin.nominal.index', compact('products', 'nominals'));
     }
 
     /**

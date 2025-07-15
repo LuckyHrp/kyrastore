@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Nominal;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,11 @@ class NominalSeeder extends Seeder
      */
     public function run(): void
     {
-
+        Nominal::create([
+            'product_id' => 1,
+            'name' => '5 Diamond ML',
+            'slug' => '5-diamond-ml',
+            'price' => 2000,
+        ]);
     }
 }
