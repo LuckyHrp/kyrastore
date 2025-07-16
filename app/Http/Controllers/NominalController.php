@@ -13,7 +13,7 @@ class NominalController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(6);
         $nominals = Nominal::with('product')->get();
         return view('admin.nominal.index', compact('products', 'nominals'));
     }

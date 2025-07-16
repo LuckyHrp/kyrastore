@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .alert-success {
+        @apply text-green-800;
+        @apply dark:text-green-400;
+    }
+    .alert-success-btn {
+        @apply text-green-500;
+        @apply focus:ring-green-400;
+        @apply hover:bg-green-200;
+        @apply dark:text-green-400;
+    }
+    .alert-error {
+        @apply text-red-800;
+        @apply text-red-400;
+    }
+    .alert-error-btn {
+        @apply text-red-500;
+        @apply focus:ring-red-400;
+        @apply hover:bg-red-200;
+        @apply dark:text-red-400;
+    }
+}

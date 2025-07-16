@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->paginate(6);
         return view('admin.product.index', compact('categories', 'products'));
     }
 
@@ -95,7 +95,7 @@ class ProductController extends Controller
 
         $product->update($validatedData);
 
-        return redirect()->route('product.index', $product->id)->with('success', 'Produk berhasil diupdate!');
+        return redirect()->route('product.index', $product->id)->with('success', 'Produk berhasil diedit!');
     }
 
     /**
@@ -103,6 +103,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if ($product->icon && Storage::disk('public')->exists($product->icon)) {
+            Storage::disk('public')->delete($product->icon);
+        }
+        $product->delete();
+
+        return redirect()->route('product.index')->with('success', 'Produk berhasil dihapus!');
     }
 }
