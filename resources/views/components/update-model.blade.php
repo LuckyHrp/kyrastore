@@ -56,14 +56,16 @@
                         <div>
                             <label for="name"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="text" name="name" id="name" value="{{ $data->name }}"
+                            <input type="text" name="name" id="name-{{ $data->id }}"
+                                value="{{ $data->name }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Type product name" required>
+                                placeholder="Masukkan Nama" required>
                         </div>
                         <div>
                             <label for="slug"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
-                            <input type="text" name="slug" id="slug" value="{{ $data->slug }}"
+                            <input type="text" name="slug" id="slug-{{ $data->id }}"
+                                value="{{ $data->slug }}"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="Product slug" required>
                         </div>
@@ -119,4 +121,41 @@
         </div>
     </div>
 </div>
-</div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            function generateSlug(text) {
+                return text.toString().toLowerCase().trim()
+                    .replace(/\s+/g, '-') // Ganti spasi dengan -
+                    .replace(/[^\w\-]+/g, '') // Hapus karakter non-kata kecuali -
+                    .replace(/\-\-+/g, '-'); // Ganti -- berulang dengan satu -
+            }
+
+            function checkSlug(slug) {
+
+            }
+
+            let timer;
+            const btnClicks = document.querySelectorAll('#updateModal{{ $data->slug }}');
+            btnClicks.forEach(btnClick => {
+                btnClick.addEventListener('click', function() {
+                    const inputName = document.querySelector('#name-{{ $data->id }}');
+                    const inputSlug = document.querySelector('#slug-{{ $data->id }}');
+
+                    if (inputName && inputSlug) {
+                        inputName.addEventListener('keyup', function() {
+                            timer = setTimeout(() => {
+                                const nameValue = this.value;
+                                const generated = generateSlug(nameValue);
+                                inputSlug.value = generated;
+                            }, 500)
+                        })
+                    }
+                    console.log(inputName, inputSlug)
+                })
+            })
+        })
+    </script>
+@endpush

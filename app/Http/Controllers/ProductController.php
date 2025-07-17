@@ -19,6 +19,22 @@ class ProductController extends Controller
         return view('admin.product.index', compact('categories', 'products'));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        // Ambil semua kategori, karena partial view kita membutuhkannya untuk modal update
+        $categories = Category::all();
+
+        $products = Product::with('category')
+            ->where('name', 'like', '%' . $query . '%')
+            ->orWhere('slug', 'like', '%' . $query . '%')
+            ->get();
+
+        // Jangan kembalikan JSON, tapi kembalikan view yang sudah dirender
+        return view('partials.product-table-rows', compact('products', 'categories'))->render();
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -55,6 +71,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
+
 
     /**
      * Display the specified resource.

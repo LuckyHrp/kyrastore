@@ -22,15 +22,16 @@ Route::middleware('auth')->group(function () {
 });
 
 route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+
+    Route::get('/admin/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('product', ProductController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('nominal', NominalController::class);
     Route::resource('bannerslide', BannerSlideController::class);
     Route::resource('transaction', TransactionController::class);
+
 });
-
-
 
 Route::get('/product', function () {
     return 'berhasil';
