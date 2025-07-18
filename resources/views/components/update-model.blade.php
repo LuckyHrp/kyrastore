@@ -1,7 +1,7 @@
-@props(['data', 'categories'])
-<div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
+@props(['data', 'categories' => false])
+<div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-3">
     <!-- Modal toggle -->
-    <div class="flex justify-center">
+    <div class="flex justify-center items-center">
         <button id="updateModal{{ $data->slug }}" data-modal-target="updateModal-{{ $data->slug }}"
             data-modal-toggle="updateModal-{{ $data->slug }}"
             class="flex items-center justify-center flex-shrink-0 px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -36,7 +36,7 @@
                 </div>
 
                 <!-- Modal body -->
-                <form action="{{ route('product.update', $data->id) }}" method="POST" enctype="multipart/form-data"
+                <form action="{{ route($slot . '.update', $data->id) }}" method="POST" enctype="multipart/form-data"
                     id="editProductForm-{{ $data->id }}">
                     @csrf
                     @method('PUT')
@@ -54,7 +54,7 @@
 
                     <div class="grid gap-4 mb-4 sm:grid-cols-2" x-data="{ imageUrl: '{{ $data->icon ? Storage::url($data->icon) : '' }}' }">
                         <div>
-                            <label for="name"
+                            <label for="name-{{ $data->id }}"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                             <input type="text" name="name" id="name-{{ $data->id }}"
                                 value="{{ $data->name }}"
@@ -62,7 +62,8 @@
                                 placeholder="Masukkan Nama" required>
                         </div>
                         <div>
-                            <label for="slug"
+                            <div id="slugStatus"></div>
+                            <label for="slug-{{ $data->id }}"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
                             <input type="text" name="slug" id="slug-{{ $data->id }}"
                                 value="{{ $data->slug }}"
@@ -116,7 +117,7 @@
                             Edit {{ $slot }}
                         </button>
                 </form>
-                <x-delete-modal :data="$data"></x-delete-modal>
+                <x-delete-modal :form="$slot" :data="$data"></x-delete-modal>
             </div>
         </div>
     </div>
@@ -133,10 +134,6 @@
                     .replace(/\-\-+/g, '-'); // Ganti -- berulang dengan satu -
             }
 
-            function checkSlug(slug) {
-
-            }
-
             let timer;
             const btnClicks = document.querySelectorAll('#updateModal{{ $data->slug }}');
             btnClicks.forEach(btnClick => {
@@ -146,14 +143,13 @@
 
                     if (inputName && inputSlug) {
                         inputName.addEventListener('keyup', function() {
+                            const nameValue = this.value;
+                            const generated = generateSlug(nameValue);
                             timer = setTimeout(() => {
-                                const nameValue = this.value;
-                                const generated = generateSlug(nameValue);
                                 inputSlug.value = generated;
-                            }, 500)
+                            }, 300)
                         })
                     }
-                    console.log(inputName, inputSlug)
                 })
             })
         })

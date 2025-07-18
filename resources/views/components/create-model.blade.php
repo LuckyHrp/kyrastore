@@ -1,4 +1,4 @@
-@props(['data'])
+@props(['data' => false])
 <div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
     <!-- Modal toggle -->
     <div class="flex justify-center">
@@ -107,3 +107,31 @@
         </div>
     </div>
 </div>
+
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputName = document.querySelector('#name');
+            const inputSlug = document.querySelector('#slug');
+            let timer;
+
+            if (inputName && inputSlug) {
+                inputName.addEventListener('keyup', function() {
+                    const nameValue = this.value;
+                    const generated = generateSlug(nameValue);
+                    timer = setTimeout(() => {
+                        inputSlug.value = generated;
+                    }, 300)
+                })
+            }
+
+            function generateSlug(text) {
+                return text.toString().toLowerCase().trim()
+                    .replace(/\s+/g, '-') // Ganti spasi dengan -
+                    .replace(/[^\w\-]+/g, '') // Hapus karakter non-kata kecuali -
+                    .replace(/\-\-+/g, '-'); // Ganti -- berulang dengan satu -
+            }
+        });
+    </script>
+@endpush

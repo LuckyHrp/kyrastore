@@ -23,7 +23,6 @@ class ProductController extends Controller
     {
         $query = $request->input('q');
 
-        // Ambil semua kategori, karena partial view kita membutuhkannya untuk modal update
         $categories = Category::all();
 
         $products = Product::with('category')
@@ -31,7 +30,6 @@ class ProductController extends Controller
             ->orWhere('slug', 'like', '%' . $query . '%')
             ->get();
 
-        // Jangan kembalikan JSON, tapi kembalikan view yang sudah dirender
         return view('partials.product-table-rows', compact('products', 'categories'))->render();
     }
 

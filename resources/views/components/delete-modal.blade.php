@@ -1,5 +1,5 @@
 <div x-data="{ deleteUrl: '' }">
-    <button type="button" x-on:click="deleteUrl = '{{ route('product.destroy', $data->id) }}'"
+    <button type="button" x-on:click="deleteUrl = '{{ route($form . '.destroy', $data->id) }}'"
         id="deleteButton-{{ $data->slug }}" data-modal-target="deleteModal-{{ $data->slug }}"
         data-modal-toggle="deleteModal-{{ $data->slug }}"
         class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">

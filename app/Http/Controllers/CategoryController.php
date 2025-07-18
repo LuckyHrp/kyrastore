@@ -13,7 +13,17 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        return view('admin.category.index');
+        $categories = Category::paginate(8);
+        return view('admin.category.index', compact('categories'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        $categories = Category::where('name', 'like', '%' . $query . '%')->orWhere('slug', 'like', '%' . $query . '%')->get();
+
+        return view('partials.category-table-rows', compact('categories'))->render();
     }
 
     /**
@@ -30,6 +40,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+        ]);
+
+        Category::create($validated);
+        return redirect()->route('category.index')->with('success', 'Category berhasil ditambahkan!');
     }
 
     /**
@@ -54,6 +71,13 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+        ]);
+
+        $category->update($validated);
+        return redirect()->route('category.index')->with('success', 'Category berhasil diubah!');
     }
 
     /**
@@ -61,6 +85,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('category.index')->with('success', 'Category berhasil dihapus!');
     }
 }

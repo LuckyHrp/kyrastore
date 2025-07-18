@@ -94,6 +94,7 @@
                                 .then(html => {
                                     const tableBody = document.querySelector('#product-table-body');
                                     tableBody.innerHTML = html;
+                                    btnUpdate();
                                     initFlowbite();
                                 })
                                 .catch(error => {
@@ -106,6 +107,40 @@
                     });
                 }
             });
+
+            // untuk auto slug
+            function generateSlug(text) {
+                return text.toString().toLowerCase().trim()
+                    .replace(/\s+/g, '-') // Ganti spasi dengan -
+                    .replace(/[^\w\-]+/g, '') // Hapus karakter non-kata kecuali -
+                    .replace(/\-\-+/g, '-'); // Ganti -- berulang dengan satu -
+            }
+
+            function btnUpdate() {
+                const paginatedProduct = @json($products);
+                const allProducts = paginatedProduct.data;
+                let timer;
+                allProducts.forEach(product => {
+                    const btnClicks = document.querySelectorAll(`#updateModal${product.slug}`);
+                    btnClicks.forEach(btnClick => {
+                        btnClick.addEventListener('click', function() {
+                            console.log(btnClick);
+                            const inputName = document.querySelector(`#name-${product.id}`);
+                            const inputSlug = document.querySelector(`#slug-${product.id}`);
+
+                            if (inputName && inputSlug) {
+                                inputName.addEventListener('keyup', function() {
+                                    const nameValue = this.value;
+                                    const generated = generateSlug(nameValue);
+                                    timer = setTimeout(() => {
+                                        inputSlug.value = generated;
+                                    }, 300)
+                                })
+                            }
+                        })
+                    })
+                });
+            }
         </script>
     @endpush
 
