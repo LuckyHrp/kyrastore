@@ -52,7 +52,7 @@
                 @endauth
                 @guest
                     <a href="{{ route('login') }}"
-                        class="rounded-sm shadow-sm px-5 py-2 text-md bg-blue-500 text-white hover:bg-blue-400 hover:text-white/90 transition focus:outline-none">
+                        class="rounded-sm shadow-sm px-5 py-2 text-md bg-sky-600 text-white hover:bg-sky-500 dark:hover:bg-sky-700 hover:text-white/90 transition focus:outline-none">
                         Log in
                     </a>
                 @endguest
