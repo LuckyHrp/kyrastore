@@ -1,4 +1,4 @@
-@forelse ($products as $product)
+@forelse ($transactions as $transaction)
     <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
         <td class="w-4 px-4 py-3">
             <div class="flex items-center">
@@ -7,34 +7,28 @@
                 <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
             </div>
         </td>
-        <td class="px-4 py-2">
-            <span class="px-2 py-0.5">
-                <img src="{{ asset('storage/' . $product->image) }}" class="w-auto h-8 mr-3" alt="Mobile Legends">
-            </span>
-        </td>
         <th scope="row" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ $product->name }}
+            {{ $transaction->trx_id }}
         </th>
-        <td class="px-4 py-2">
-            <span
-                class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-                {{ $product->category->name }}
-            </span>
+        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ $transaction->user->name }}
         </td>
         <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <div class="flex items-center">
-                <span class="ml-1 text-gray-500 dark:text-gray-400">{{ $product->slug }}</span>
-            </div>
+            {{ $transaction->nominal->name }}
         </td>
         <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ $product->description }}</td>
-        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ $product->created_at->diffForHumans() }}
+            Rp {{ number_format(intval($transaction->final_price), 0, ',', '.') }}
         </td>
         <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <x-update-model :data="$product" :categories="$categories">
-                product
-            </x-update-model>
+            {{ $transaction->status }}
+        </td>
+        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ $transaction->created_at->diffForHumans() }}
+        </td>
+        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <x-detail-modal :data="$transaction">
+                Transaction
+            </x-detail-modal>
         </td>
     </tr>
 @empty

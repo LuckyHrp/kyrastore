@@ -21,7 +21,7 @@ class ProductSeeder extends Seeder
             'name' => 'Mobile Legends',
             'slug' => 'mobile-legends',
             'category_id' => $category->id,
-            'icon' => '/products/mobile-legends.png',
+            'image' => '/products/mobile-legends.png',
             'description' => 'mobile legend',
         ]);
     }

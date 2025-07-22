@@ -13,7 +13,27 @@ class TransactionController extends Controller
     public function index()
     {
         //
-        return view('admin.transaction.index');
+        $transactions = Transaction::with(['user', 'nominal'])->paginate(8);
+        return view('admin.transaction.index', compact('transactions'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        $transactions = Transaction::with(['user', 'nominal'])
+            ->where('trx_id', 'like', '%' . $query . '%')
+            ->orWhere('final_price', 'like', '%' . $query . '%')
+            ->orWhereHas('user', function ($q) use ($query) {
+                $q->where(column: 'name', operator: 'like', value: '%' . $query . '%');
+            })
+            ->orWhereHas('nominal', function ($q) use ($query) {
+                $q->where(column: 'name', operator: 'like', value: '%' . $query . '%');
+            })
+            ->paginate(8);
+        ;
+
+        return view('partials.transaction-table-rows', compact('transactions'));
     }
 
     /**
@@ -61,6 +81,8 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+
+        return redirect()->route('transaction.index')->with('success', 'Data transaksi berhasil dihapus');
     }
 }

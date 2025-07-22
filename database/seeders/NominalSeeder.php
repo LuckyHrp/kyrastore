@@ -16,7 +16,7 @@ class NominalSeeder extends Seeder
         Nominal::create([
             'product_id' => 1,
             'name' => '5 Diamond ML',
-            'slug' => '5-diamond-ml',
+            'code' => '5MLBB',
             'price' => 2000,
         ]);
     }

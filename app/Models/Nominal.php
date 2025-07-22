@@ -9,13 +9,18 @@ class Nominal extends Model
     //
     protected $fillable = [
         'product_id',
-        'nominal',
-        'slug',
+        'name',
+        'code',
         'price',
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

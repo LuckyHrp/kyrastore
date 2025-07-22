@@ -1,5 +1,5 @@
-@props(['data' => false])
-<div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
+@props(['categories' => false, 'products' => false, 'banners' => false])
+<div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-3">
     <!-- Modal toggle -->
     <div class="flex justify-center">
         <button id="createModalButton" data-modal-target="createModal" data-modal-toggle="createModal"
@@ -10,7 +10,7 @@
                 <path clip-rule="evenodd" fill-rule="evenodd"
                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
             </svg>
-            Add New {{ $slot }}
+            Add {{ $slot }}
         </button>
     </div>
 
@@ -39,31 +39,36 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form action="{{ route($slot . '.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route(Str::lower($slot) . '.store') }}" method="POST" enctype="multipart/form-data">
                     <div class="grid gap-4 mb-4 sm:grid-cols-2" x-data="{ imageUrl: '' }">
                         @csrf
-                        <div>
-                            <label for="name"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="text" name="name" id="name"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Type product name" required>
-                        </div>
-                        <div>
-                            <label for="slug"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
-                            <input type="text" name="slug" id="slug"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Product slug" required>
-                        </div>
-                        @if ($data)
+                        @if (!$banners)
+                            <div>
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                <input type="text" name="name" id="name"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Type {{ $slot }} name" required>
+                            </div>
+                        @endif
+                        @if (!$products && !$banners)
+                            <div>
+                                <label for="slug"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
+                                <input type="text" name="slug" id="slug"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="{{ $slot }} slug" required>
+                            </div>
+                        @endif
+
+                        @if ($categories)
                             <div class="sm:col-span-2">
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                                 <select id="category" name="category_id"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value="" disabled selected>Pilih Category</option>
-                                    @foreach ($data as $category)
+                                    @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">
                                             {{ $category->name }}</option>
                                     @endforeach
@@ -82,13 +87,76 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-pointer flex items-center justify-center">
                                     <span>Upload Gambar</span>
                                 </label>
-                                <input type="file" id="image" name="icon" class="sr-only" accept="image/*"
+                                <input type="file" id="image" name="image" class="sr-only" accept="image/*"
                                     x-on:change="const reader = new FileReader(); reader.onload = (e) => { imageUrl = e.target.result }; reader.readAsDataURL($event.target.files[0]);">
                             </div>
                             <div x-show="imageUrl" class="max-w-16">
                                 <span
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preview</span>
                                 <img id="image-preview" :src="imageUrl" alt="Image Preview" class="w-full">
+                            </div>
+                        @endif
+
+                        @if ($products)
+                            <div>
+                                <label for="code"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Code</label>
+                                <input type="text" name="code" id="code"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Input Code" required>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                                <input type="number" name="price" id="price"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Input Price" required>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="product"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product</label>
+                                <select name="product_id" id="product"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option value="" selected disabled>Pilih Product</option>
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}">
+                                            {{ $product->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
+                        @if ($banners)
+                            <div>
+                                <label for="title"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                                <input type="text" name="title" id="title"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Input title" required>
+                            </div>
+                            <div>
+                                <label for="link_url"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Link
+                                    Url (optional)</label>
+                                <input type="text" name="link_url" id="link_url"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Input link url">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <span class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</span>
+                                <label for="image"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-pointer flex items-center justify-center">
+                                    <span>Upload Gambar</span>
+                                </label>
+                                <input type="file" id="image" name="image" class="sr-only"
+                                    accept="image/*"
+                                    x-on:change="const reader = new FileReader(); reader.onload = (e) => { imageUrl = e.target.result }; reader.readAsDataURL($event.target.files[0]);">
+                            </div>
+                            <div x-show="imageUrl" class="max-w-full sm:col-span-2">
+                                <span
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preview</span>
+                                <img id="image-preview" :src="imageUrl" alt="Image Preview"
+                                    class="w-full max-h-60 object-cover">
                             </div>
                         @endif
                     </div>
@@ -100,7 +168,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        Add new {{ $slot }}
+                        Add {{ $slot }}
                     </button>
                 </form>
             </div>

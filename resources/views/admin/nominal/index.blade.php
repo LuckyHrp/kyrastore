@@ -1,16 +1,17 @@
 <x-app-admin-layout>
-    <section class="w-full">
+    <section class="w-full relative">
         <div class="">
             <div class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                 <div
                     class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
-                    <div class="flex items-center flex-1 space-x-4">
+                    <div class="flex items-center flex-shrink-0 space-x-4">
                         <h5>
-                            <span class="text-gray-500">All Nominals:</span>
-                            <span class="dark:text-white">{{ $products->count() }}</span>
+                            <span class="text-gray-500">All nominals:</span>
+                            <span class="dark:text-white">{{ $nominals->count() }}</span>
                         </h5>
                     </div>
-
+                    <x-search-bar>Cari nominal</x-search-bar>
+                    <x-create-model :products="$products">Nominal</x-create-model>
                     <button type="button"
                         class="flex items-center justify-center flex-shrink-0 px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                         <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
@@ -34,75 +35,113 @@
                                     </div>
                                 </th>
                                 <th scope="col" class="px-4 py-3">Icon</th>
-                                <th scope="col" class="px-4 py-3">Name</th>
-                                <th scope="col" class="px-4 py-3">Slug</th>
+                                <th scope="col" class="px-4 py-3">Product</th>
+                                <th scope="col" class="px-4 py-3">Nominal</th>
+                                <th scope="col" class="px-4 py-3">Code</th>
                                 <th scope="col" class="px-4 py-3">Price</th>
                                 <th scope="col" class="px-4 py-3">Last Update</th>
                                 <th scope="col" class="px-4 py-3">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($products as $product)
-                                <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <td class="w-4 px-4 py-3">
-                                        <div class="flex items-center">
-                                            <input id="checkbox-table-search-1" type="checkbox"
-                                                onclick="event.stopPropagation()"
-                                                class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                        </div>
-                                    </td>
-                                    <a href="">
-                                        <td class="px-4 py-2">
-                                            <span class="px-2 py-0.5">
-                                                <img src="{{ asset('storage/' . $product->icon) }}"
-                                                    class="w-auto h-8 mr-3" alt="Mobile Legends">
-                                            </span>
-                                        </td>
-                                        <th scope="row"
-                                            class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $product->name }}
-                                        </th>
-                                        <td
-                                            class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div class="flex items-center">
-                                                <span
-                                                    class="ml-1 text-gray-500 dark:text-gray-400">{{ $product->slug }}</span>
-                                            </div>
-                                        </td>
-                                        <td
-                                            class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $product->description }}</td>
-                                        <td
-                                            class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $product->created_at->diffForHumans() }}
-                                        </td>
-                                        <td
-                                            class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <x-update-model :data="$product" :categories="false">
-                                                product
-                                            </x-update-model>
-                                        </td>
-                                    </a>
-                                </tr>
-                            @endforeach
+                        <tbody id="table-body">
+                            @include('partials.nominal-table-rows', [
+                                'nominals' => $nominals,
+                                'products' => $products,
+                            ])
                         </tbody>
                     </table>
                 </div>
                 <div class="py-2 px-4">
-                    {{ $products->links() }}
+                    {{ $nominals->links() }}
                 </div>
             </div>
-            @if (session('success'))
-                <x-alert x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 transform scale-90"
-                    x-transition:enter-end="opacity-100 transform scale-100"
-                    x-transition:leave="transition ease-in duration-300"
-                    x-transition:leave-start="opacity-100 transform scale-100"
-                    x-transition:leave-end="opacity-0 transform scale-90" status="alert-success"
-                    btn="alert-succes-btn">{{ session('success') }}</x-alert>
-            @endif
         </div>
+        @if (session('success'))
+            <x-alert x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 transform scale-90"
+                x-transition:enter-end="opacity-100 transform scale-100"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-90" status="alert-success"
+                btn="alert-succes-btn">{{ session('success') }}</x-alert>
+        @endif
     </section>
+
+    @push('scripts')
+        <script>
+            // Menunggu sampai seluruh konten HTML dimuat
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.querySelector('#search-input');
+                const tableBody = document.querySelector('#table-body');
+                let debounceTimer;
+
+                if (searchInput && tableBody) {
+                    searchInput.addEventListener('keyup', function() {
+                        const query = this.value;
+                        clearTimeout(debounceTimer);
+                        debounceTimer = setTimeout(() => {
+                            tableBody.innerHTML =
+                                '<tr><td colspan="8" class="text-center py-4 text-gray-500">Mencari...</td></tr>';
+
+                            fetch(`{{ route('nominal.search') }}?q=${encodeURIComponent(query)}`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    return response.text();
+                                })
+                                .then(html => {
+                                    const tableBody = document.querySelector('#table-body');
+                                    tableBody.innerHTML = html;
+                                    btnUpdate();
+                                    initFlowbite();
+                                })
+                                .catch(error => {
+                                    console.error('Fetch error:', error);
+                                    document.querySelector('#product-table-body').innerHTML =
+                                        '<tr><td colspan="8" class="text-center py-4 text-red-500">Terjadi kesalahan.</td></tr>';
+                                });
+
+                        }, 300);
+                    });
+                }
+            });
+
+            // untuk auto slug
+            function generateSlug(text) {
+                return text.toString().toLowerCase().trim()
+                    .replace(/\s+/g, '-') // Ganti spasi dengan -
+                    .replace(/[^\w\-]+/g, '') // Hapus karakter non-kata kecuali -
+                    .replace(/\-\-+/g, '-'); // Ganti -- berulang dengan satu -
+            }
+
+            function btnUpdate() {
+                const jsonData = @json($nominals);
+                const allData = jsonData.data;
+                let timer;
+                allData.forEach(data => {
+                    const btnClicks = document.querySelectorAll(`#updateModal${data.id}`);
+                    btnClicks.forEach(btnClick => {
+                        btnClick.addEventListener('click', function() {
+                            console.log(btnClick);
+                            const inputName = document.querySelector(`#name-${data.id}`);
+                            const inputSlug = document.querySelector(`#slug-${data.id}`);
+
+                            if (inputName && inputSlug) {
+                                inputName.addEventListener('keyup', function() {
+                                    const nameValue = this.value;
+                                    const generated = generateSlug(nameValue);
+                                    timer = setTimeout(() => {
+                                        inputSlug.value = generated;
+                                    }, 300)
+                                })
+                            }
+                        })
+                    })
+                });
+            }
+        </script>
+    @endpush
+
 </x-app-admin-layout>

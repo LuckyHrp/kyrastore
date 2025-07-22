@@ -51,12 +51,12 @@ class ProductController extends Controller
             'slug' => 'required|string:max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
-            'icon' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $path = null;
-        if ($request->hasFile('icon')) {
-            $path = $request->file('icon')->store('products', 'public');
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
         }
 
         Product::create([
@@ -64,7 +64,7 @@ class ProductController extends Controller
             'slug' => $validatedData['slug'],
             'category_id' => $validatedData['category_id'],
             'description' => $validatedData['description'],
-            'icon' => $path,
+            'image' => $path,
         ]);
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
@@ -97,15 +97,15 @@ class ProductController extends Controller
             'slug' => 'required|string:max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if ($request->hasFile('icon')) {
-            if ($product->icon && Storage::exists($product->icon)) {
-                Storage::delete($product->icon);
+        if ($request->hasFile('image')) {
+            if ($product->image && Storage::exists($product->image)) {
+                Storage::delete($product->image);
             }
-            $path = $request->file('icon')->store('products', 'public');
-            $validatedData['icon'] = $path;
+            $path = $request->file('image')->store('products', 'public');
+            $validatedData['image'] = $path;
         }
 
         $product->update($validatedData);
@@ -118,8 +118,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product->icon && Storage::disk('public')->exists($product->icon)) {
-            Storage::disk('public')->delete($product->icon);
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
         }
         $product->delete();
 
