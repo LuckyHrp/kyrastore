@@ -1,25 +1,26 @@
+@props(['banners'])
+
 <div x-data="{
-        activeSlide: 1,
-        // [!] Ganti data PHP dengan array JavaScript statis di sini
-        slides: [
-            { id: 1, title: 'Banner 1', image_url: '{{ asset('storage/banners/delta-force-slider.webp') }}' },
-            { id: 2, title: 'Banner 2', image_url: '{{ asset('storage/banners/free-fire-slider.webp') }}' },
-            {{-- { id: 3, title: 'Banner 3', image_url: '{{ asset('storage/banners/delta-force-slider.webp') }}' } --}}
-        ],
-        loop() {
-            setInterval(() => {
-                this.activeSlide = this.activeSlide === this.slides.length ? 1 : this.activeSlide + 1
-            }, 5000);
-        }
-    }" x-init="loop()"
-    class="relative w-full overflow-hidden rounded-2xl shadow-lg bg-gray-800">
+    activeSlide: 1,
+    // [!] Ganti data PHP dengan array JavaScript statis di sini
+    slides: [
+        @foreach ($banners as $banner)
+        { id: {{ $banner->id }}, title: '{{ $banner->title }}', image_url: '{{ asset('storage/' . $banner->image) }}' }, @endforeach
+    ],
+    loop() {
+        setInterval(() => {
+            this.activeSlide = this.activeSlide === this.slides.length ? 1 : this.activeSlide + 1
+        }, 5000);
+    }
+}" x-init="loop()"
+    class="relative overflow-hidden w-full rounded-2xl shadow-lg bg-gray-800">
 
     {{-- Container untuk semua slide yang akan bergeser --}}
     <div class="flex transition-transform duration-500 ease-in-out"
         :style="'transform: translateX(-' + (activeSlide - 1) * 100 + '%)'">
         {{-- Template loop untuk setiap slide --}}
         <template x-for="slide in slides" :key="slide.id">
-            <div class="w-full flex-shrink-0" style="height: 70vh;">
+            <div class="w-full flex-shrink-0">
                 <img :src="slide.image_url" :alt="slide.title" class="w-full h-full object-cover" />
             </div>
         </template>

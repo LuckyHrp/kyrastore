@@ -8,15 +8,15 @@
     <div class="py-12">
         <div>
             <div class="overflow-hidden">
-                <x-banner-slide></x-banner-slide>
-            </div>
-            <div class="bg-white overflow-hidden mt-10 shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
+                <x-banner-slide :banners="$banners"></x-banner-slide>
+                <x-product-grid :products="$products">Popular Products</x-product-grid>
+                <x-product-grid :products="$games">Top-up Game</x-product-grid>
+                <x-product-grid :products="$vouchers">Voucher Game</x-product-grid>
+                <x-product-grid :products="$pulsa">Pulsa</x-product-grid>
+                <x-product-grid :products="$hiburan">Hiburan</x-product-grid>
             </div>
         </div>
     </div>
 
-    <x-footer></x-footer>   
+    <x-footer></x-footer>
 </x-app-layout>

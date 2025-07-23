@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NominalController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProductController;
@@ -11,9 +12,7 @@ use App\Models\Banner;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 Route::middleware('auth')->group(function () {
