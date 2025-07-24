@@ -10,8 +10,7 @@
         <a href="">
             <td class="px-4 py-2">
                 <span class="px-2 py-0.5">
-                    <img src="{{ asset('storage/' . $nominal->product->image) }}" class="w-auto h-8 mr-3"
-                        alt="Mobile Legends">
+                    <img src="{{ asset('storage/' . $nominal->image) }}" class="w-auto h-8 mr-3" alt="Mobile Legends">
                 </span>
             </td>
             <th scope="row" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">

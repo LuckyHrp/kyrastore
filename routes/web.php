@@ -8,14 +8,13 @@ use App\Http\Controllers\NominalController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Banner;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
+use function Laravel\Prompts\search;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
-Route::middleware('auth')->group(function () {
+Route::middleware('auth, role:user')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -36,8 +35,8 @@ route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::resource('transaction', TransactionController::class);
 });
 
-Route::get('/product', function () {
-    return 'berhasil';
-});
+Route::get('/product/{product:slug}', [ProductController::class, 'show'])->name('single-product');
+
+Route::get('/search', [HomeController::class, 'search'])->name('main.search');
 
 require __DIR__ . '/auth.php';

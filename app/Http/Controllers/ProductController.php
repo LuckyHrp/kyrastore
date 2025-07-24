@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Nominal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -49,6 +50,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string:max:255',
+            'company' => 'required|string:max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -57,15 +59,10 @@ class ProductController extends Controller
         $path = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public');
+            $validatedData['image'] = $path;
         }
 
-        Product::create([
-            'name' => $validatedData['name'],
-            'slug' => $validatedData['slug'],
-            'category_id' => $validatedData['category_id'],
-            'description' => $validatedData['description'],
-            'image' => $path,
-        ]);
+        Product::create($validatedData);
 
         return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan!');
     }
@@ -76,7 +73,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $nominals = Nominal::whereHas('product', function ($q) use ($product) {
+            $q->where('slug', '=', $product->slug);
+        })->get();
+        return view('single-product', ['product' => $product, 'nominals' => $nominals]);
     }
 
     /**
@@ -95,6 +95,7 @@ class ProductController extends Controller
         $validatedData = request()->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string:max:255',
+            'company' => 'required|string:max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

@@ -5,12 +5,18 @@
             <!-- Logo -->
             <div class="shrink-0 flex items-center">
                 <a href="{{ route('dashboard') }}">
-                    <x-application-logo class="" />
+                    <x-application-logo></x-application-logo>
                 </a>
             </div>
 
             <!-- Search Bar -->
-            <x-search-bar></x-search-bar>
+            <x-search-bar>
+                <x-slot name="searchBox">
+                    <div id="box-search"
+                        class="hidden absolute z-50 w-full p-4 shadow rounded text-gray-800 dark:text-gray-300 bg-gray-400 dark:bg-gray-900 top-[4.3rem]">
+                    </div>
+                </x-slot>
+            </x-search-bar>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex gap-4 sm:items-center sm:ms-6">
@@ -116,3 +122,53 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const search = document.querySelector('#search-input');
+        const boxSearch = document.querySelector('#box-search');
+        let timer;
+        search.addEventListener('keyup', function() {
+            const value = this.value;
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                boxSearch.classList.remove('hidden');
+                boxSearch.innerHTML =
+                    '<div class="text-sm text-gray-500">Mencari Product...</div>';
+                fetch(`{{ route('main.search') }}?q=${encodeURIComponent(value)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('ajax gagal terkoneksi')
+                        }
+                        return response.json();
+                    })
+                    .then(datas => {
+                        let html = '';
+                        if (datas.length > 0) {
+                            datas.forEach(data => {
+                                html += `<a href="/product/${data.slug}" class="flex items-center py-2 px-4 gap-4 hover:bg-gray-300 rounded dark:hover:bg-gray-700">
+                                        <img src="storage/${data.image}" alt="${data.name}" class="max-w-10 rounded">
+                                        <h2 class="text-md font-semibold">${data.name}</h2>
+                                    </a>`;
+                                boxSearch.innerHTML = html;
+                            });
+                        } else {
+                            boxSearch.innerHTML =
+                                '<div class="text-sm text-gray-500">Produk Tidak Ditemukan</div>';
+                        }
+                        document.addEventListener('click', function(event) {
+                            if (!search.contains(event.target) && !
+                                boxSearch.contains(event.target)) {
+                                boxSearch.classList.add('hidden');
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        boxSearch.innerHTML =
+                            '<div class="text-sm text-red-500">Terjadi Kesalahan.</div>';
+                    });
+            });
+        });
+    });
+</script>

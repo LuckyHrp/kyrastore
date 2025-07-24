@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Nominal;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NominalController extends Controller
 {
@@ -54,8 +55,14 @@ class NominalController extends Controller
             'product_id' => 'required|integer|exists:products,id',
             'name' => 'required|string:max:255',
             'code' => 'required|string:max:255',
-            'price' => 'required|integer'
+            'price' => 'required|integer',
+            'image' => 'required|image|mimes:jpeg,jpg,png,webp,svg|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('nominals', 'public');
+            $validated['image'] = $path;
+        }
 
         Nominal::create($validated);
 
@@ -87,8 +94,17 @@ class NominalController extends Controller
             'product_id' => 'required|integer|exists:products,id',
             'name' => 'required|string:max:255',
             'code' => 'required|string:max:255',
-            'price' => 'required|integer'
+            'price' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,webp,svg|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            if ($nominal->image && Storage::exists($nominal->image)) {
+                Storage::delete($nominal->image);
+            }
+            $path = $request->file('image')->store('nominals', 'public');
+            $validated['image'] = $path;
+        }
 
         $nominal->update($validated);
 
@@ -100,6 +116,9 @@ class NominalController extends Controller
      */
     public function destroy(Nominal $nominal)
     {
+        if ($nominal->image && Storage::disk('public')->exists($nominal->image)) {
+            Storage::disk('public')->delete($nominal->image);
+        }
         $nominal->delete();
 
         return redirect()->route('nominal.index')->with('success', 'Nominal berhasil dihapus');

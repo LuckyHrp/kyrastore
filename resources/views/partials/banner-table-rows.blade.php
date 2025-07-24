@@ -19,16 +19,15 @@
             @endif
             {{ $banner->link_url }}
         </td>
+        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ $banner->created_at->diffForHumans() }}
+        </td>
         <td class="px-4 py-2">
             @if ($banner->is_active)
                 <span>true</span>
             @else
                 <span>false</span>
             @endif
-
-        </td>
-        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ $banner->created_at->diffForHumans() }}
         </td>
         <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             <x-update-model :data="$banner" :banners="true">

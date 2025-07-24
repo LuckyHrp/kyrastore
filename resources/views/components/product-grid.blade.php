@@ -6,7 +6,7 @@
 
         <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-7">
             @foreach ($products as $product)
-                <a href="#" class="p-2 text-center">
+                <a href="{{ route('single-product', $product->slug) }}" class="p-2 text-center">
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="rounded-md">
                     <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $product->name }}</span>
                 </a>

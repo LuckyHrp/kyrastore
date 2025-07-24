@@ -36,6 +36,7 @@
                                 </th>
                                 <th scope="col" class="px-4 py-3">Icon</th>
                                 <th scope="col" class="px-4 py-3">Product</th>
+                                <th scope="col" class="px-4 py-3">Company</th>
                                 <th scope="col" class="px-4 py-3">Category</th>
                                 <th scope="col" class="px-4 py-3">Slug</th>
                                 <th scope="col" class="px-4 py-3">Description</th>
@@ -70,7 +71,6 @@
 
     @push('scripts')
         <script>
-            // Menunggu sampai seluruh konten HTML dimuat
             document.addEventListener('DOMContentLoaded', function() {
                 const searchInput = document.querySelector('#search-input');
                 const tableBody = document.querySelector('#product-table-body');
@@ -100,7 +100,7 @@
                                 .catch(error => {
                                     console.error('Fetch error:', error);
                                     document.querySelector('#product-table-body').innerHTML =
-                                        '<tr><td colspan="8" class="text-center py-4 text-red-500">Terjadi kesalahan.</td></tr>';
+                                        '<tr><td colspan="8" class="text-center py-4 ">Terjadi kesalahan.</td></tr>';
                                 });
 
                         }, 300);

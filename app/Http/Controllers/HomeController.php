@@ -26,4 +26,15 @@ class HomeController extends Controller
         $banners = Banner::where('is_active', true)->get();
         return view('home', compact(['banners', 'products', 'games', 'vouchers', 'pulsa', 'hiburan']));
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        $products = Product::where('name', 'like', '%' . $query . '%')
+            ->orWhere('slug', 'like', '%' . $query . '%')
+            ->get();
+
+        return json_encode($products, JSON_PRETTY_PRINT);
+    }
 }

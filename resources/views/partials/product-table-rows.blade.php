@@ -15,6 +15,9 @@
         <th scope="row" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ $product->name }}
         </th>
+        <th scope="row" class="px-4 py-2 font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 ">
+            {{ Str::ucfirst($product->company) }}
+        </th>
         <td class="px-4 py-2">
             <span
                 class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
@@ -27,7 +30,8 @@
             </div>
         </td>
         <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ $product->description }}</td>
+            {{ $product->description }}
+        </td>
         <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ $product->created_at->diffForHumans() }}
         </td>

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('company');
             $table->foreignId('category_id')->constrained();
             $table->string('image');
             $table->text('description');

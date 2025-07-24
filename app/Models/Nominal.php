@@ -10,6 +10,7 @@ class Nominal extends Model
     protected $fillable = [
         'product_id',
         'name',
+        'image',
         'code',
         'price',
     ];

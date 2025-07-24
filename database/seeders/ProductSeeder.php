@@ -20,6 +20,7 @@ class ProductSeeder extends Seeder
         Product::create([
             'name' => 'Mobile Legends',
             'slug' => 'mobile-legends',
+            'company' => 'moonton',
             'category_id' => $category->id,
             'image' => '/products/mobile-legends.png',
             'description' => 'mobile legend',
