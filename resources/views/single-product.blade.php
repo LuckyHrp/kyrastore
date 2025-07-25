@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="block grid-cols-3 gap-6 mt-8 lg:grid">
         <div class="mb-5">
-            <div class="bg-slate-700 p-5 rounded-md">
+            <div class="bg-gray-300 dark:bg-slate-700 p-5 rounded-md">
                 <div class="flex items-center gap-4 mb-3 relative">
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                         class="max-w-20 rounded-md text-gray-800 dark:text-gray-200">
@@ -25,10 +25,10 @@
         <div class="col-span-2">
             <form action="">
                 @csrf
-                <div class="bg-slate-700 p-5 rounded-md">
+                <div class="bg-gray-300 dark:bg-slate-700 p-5 rounded-md">
                     <div class="flex items-center gap-4">
                         <span
-                            class="bg-blue-500 text-lg font-semibold py-1 px-5 text-gray-800 dark:text-gray-200 rounded-full">1</span>
+                            class="bg-blue-500 text-lg font-semibold py-1 px-5 text-gray-200 rounded-full">1</span>
                         <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">
                             Masukkan detail akun
                         </h2>
@@ -51,10 +51,10 @@
                         @endif
                     </div>
                 </div>
-                <div class=" mt-5 bg-slate-700 p-5 rounded-md">
+                <div class=" mt-5 bg-gray-300 dark:bg-slate-700 p-5 rounded-md">
                     <div class="flex items-center gap-4">
                         <span
-                            class="bg-blue-500 text-lg font-semibold py-1 px-5 text-gray-800 dark:text-gray-200 rounded-full">2</span>
+                            class="bg-blue-500 text-lg font-semibold py-1 px-5 text-gray-200 rounded-full">2</span>
                         <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">
                             Pilih Nominal Top-up
                         </h2>
@@ -74,10 +74,10 @@
                         <input type="hidden" name="nominal_id" id="nominal">
                     </div>
                 </div>
-                <div class=" mt-5 bg-slate-700 p-5 rounded-md">
+                <div class=" mt-5 bg-gray-300 dark:bg-slate-700 p-5 rounded-md">
                     <div class="flex items-center gap-4">
                         <span
-                            class="bg-blue-500 text-lg font-semibold py-1 px-5 text-gray-800 dark:text-gray-200 rounded-full">3</span>
+                            class="bg-blue-500 text-lg font-semibold py-1 px-5 text-gray-200 rounded-full">3</span>
                         <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">
                             Pilih Metode Pembayaran
                         </h2>

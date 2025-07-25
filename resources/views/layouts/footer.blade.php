@@ -51,7 +51,7 @@
                 </div>
                 <div class="items-center justify-center">
                     <a href="#"
-                        class="bg-gray-700 hover:bg-gray-600 transition-colors text-white font-bold py-3 px-6 rounded-full">
+                        class="bg-sky-700 hover:bg-sky-600 active:bg-sky-800 transition-colors text-white font-bold py-3 px-6 rounded-full">
                         Contact Us
                     </a>
                 </div>
@@ -65,8 +65,6 @@
                         <div class="flex w-max animate-scroll">
 
                             <div class="flex items-center gap-x-6 px-3">
-                                <img src="{{ asset('storage/payments/qris-logo.png') }}" class="h-8 w-auto"
-                                    alt="QRIS">
                                 <img src="{{ asset('storage/payments/gopay-logo.png') }}" class="h-8 w-auto"
                                     alt="GoPay">
                                 <img src="{{ asset('storage/payments/ovo-logo.png') }}" class="h-8 w-auto"
@@ -92,8 +90,6 @@
                             </div>
 
                             <div class="flex items-center gap-x-6 px-3">
-                                <img src="{{ asset('storage/payments/qris-logo.png') }}" class="h-8 w-auto"
-                                    alt="QRIS">
                                 <img src="{{ asset('storage/payments/gopay-logo.png') }}" class="h-8 w-auto"
                                     alt="GoPay">
                                 <img src="{{ asset('storage/payments/ovo-logo.png') }}" class="h-8 w-auto"
@@ -142,8 +138,8 @@
 
                     <div>
                         <div class="flex space-x-4">
-                            <a href="#" class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                                <svg class="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true"
+                            <a href="#">
+                                <svg class="w-[35px] h-[35px] text-red-600 hover:text-red-500" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
@@ -151,8 +147,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                                <svg class="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true"
+                            <a href="#">
+                                <svg class="w-[35px] h-[35px] text-rose-700 hover:text-rose-500 active:text-rose-600" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                     viewBox="0 0 24 24">
                                     <path fill="currentColor" fill-rule="evenodd"
@@ -160,8 +156,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                                <svg class="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true"
+                            <a href="#">
+                                <svg class="w-[35px] h-[35px] text-blue-500 hover:text-blue-400 active:text-blue-600" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
@@ -169,8 +165,8 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-gray-900 dark:hover:text-white">
-                                <svg class="w-[35px] h-[35px] text-gray-800 dark:text-white" aria-hidden="true"
+                            <a href="#">
+                                <svg class="w-[35px] h-[35px] text-sky-600 hover:text-sky-500 active:text-sky-600" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
