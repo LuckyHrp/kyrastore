@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NominalExport;
 use App\Models\Nominal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NominalController extends Controller
 {
@@ -36,6 +38,11 @@ class NominalController extends Controller
         ;
 
         return view('partials.nominal-table-rows', compact('products', 'nominals'))->render();
+    }
+
+    public function export()
+    {
+        return Excel::download(new NominalExport, 'nominal.xlsx');
     }
 
     /**

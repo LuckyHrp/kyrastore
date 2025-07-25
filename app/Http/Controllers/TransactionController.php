@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransactionExport;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionController extends Controller
 {
@@ -34,6 +36,11 @@ class TransactionController extends Controller
         ;
 
         return view('partials.transaction-table-rows', compact('transactions'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new TransactionExport, 'trx.xlsx');
     }
 
     /**

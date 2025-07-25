@@ -22,12 +22,17 @@ Route::middleware('auth')->group(function () {
 
 route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
+    Route::get('/nominal/export', [NominalController::class, 'export'])->name('nominal.export');
+    Route::get('/transaction/export', [TransactionController::class, 'export'])->name('transaction.export');
+
     Route::get('/category/search', [CategoryController::class, 'search'])->name('category.search');
     Route::get('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/nominal/search', [NominalController::class, 'search'])->name('nominal.search');
     Route::get('/transaction/search', [TransactionController::class, 'search'])->name('transaction.search');
 
+
     Route::post('/product/bulkaction', [ProductController::class, 'bulkaction'])->name('product.bulkaction');
+
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('product', ProductController::class);

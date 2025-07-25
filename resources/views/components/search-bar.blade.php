@@ -1,5 +1,5 @@
 <div class="mr-4 sm:flex flex-grow items-center relative">
-    <form action="">
+    <form action="" class="w-full">
         <div class="flex w-full">
             <input type="search" name="search" id="search-input" placeholder="Cari Game atau Aplikasi..."
                 autocomplete="off"
