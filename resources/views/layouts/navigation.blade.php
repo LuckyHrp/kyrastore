@@ -1,11 +1,11 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow dark:border-gray-600 dark:bg-gray-900">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 py-1 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 gap-8">
             <!-- Logo -->
             <div class="shrink-0 flex items-center">
-                <a href="{{ route('dashboard') }}">
-                    <x-application-logo></x-application-logo>
+                <a href="{{ route('home') }}" class="text-2xl font-bold text-gray-800 dark:text-gray-300">
+                    Kyrastore
                 </a>
             </div>
 

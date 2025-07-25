@@ -14,7 +14,7 @@ use function Laravel\Prompts\search;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::middleware('auth, role:user')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -26,6 +26,8 @@ route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
     Route::get('/product/search', [ProductController::class, 'search'])->name('product.search');
     Route::get('/nominal/search', [NominalController::class, 'search'])->name('nominal.search');
     Route::get('/transaction/search', [TransactionController::class, 'search'])->name('transaction.search');
+
+    Route::post('/product/bulkaction', [ProductController::class, 'bulkaction'])->name('product.bulkaction');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('product', ProductController::class);

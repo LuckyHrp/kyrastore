@@ -7,6 +7,7 @@ use App\Models\Nominal;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -32,6 +33,27 @@ class ProductController extends Controller
             ->get();
 
         return view('partials.product-table-rows', compact('products', 'categories'))->render();
+    }
+
+    public function bulkaction(Request $request)
+    {
+        $request->validate([
+            'action' => ['required', Rule::in(['delete'])],
+            'product_ids' => ['required', 'array'],
+            'product_ids.*' => ['exists:products,id'],
+        ]);
+
+        $productIds = $request->input('product_ids');
+        $action = $request->input('action');
+        $message = '';
+
+        switch ($action) {
+            case 'delete';
+                Product::whereIn('id', $productIds)->delete();
+                $message = count($productIds) . ' produk berhasil dihapus.';
+                break;
+        }
+        return redirect()->route('product.index')->with('success', $message);
     }
 
     /**

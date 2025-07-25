@@ -40,12 +40,15 @@
                             <input type="text" name="player_id" placeholder="Masukkan User ID"
                                 class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         </div>
-                        <div class="flex-1">
-                            <label for="player_id" class="text-md font-semibold text-gray-800 dark:text-gray-200">Server
-                                ID</label>
-                            <input type="text" name="player_id" placeholder="Masukkan Server ID"
-                                class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        </div>
+                        @if ($product->slug == 'mobile-legends')
+                            <div class="flex-1">
+                                <label for="player_id"
+                                    class="text-md font-semibold text-gray-800 dark:text-gray-200">Server
+                                    ID</label>
+                                <input type="text" name="player_id" placeholder="Masukkan Server ID"
+                                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-slate-600 dark:border-slate-500 dark:placeholder-slate-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class=" mt-5 bg-slate-700 p-5 rounded-md">
